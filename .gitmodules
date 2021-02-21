@@ -1,8 +1,6 @@
 [submodule ".source/dotbot"]
 	path = .source/dotbot
 	url = https://github.com/anishathalye/dotbot
-[submodule "dotbot"]
-	ignore = dirty
 [submodule ".config/vim/bundle/beacon.nvim"]
 	path = .config/vim/bundle/beacon.nvim
 	url = https://github.com/danilamihailov/beacon.nvim.git
