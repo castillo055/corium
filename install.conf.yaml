@@ -1,0 +1,7 @@
+- clean: ['~']
+
+- link:
+        ~/.config/bc/bc.env: .config/bc/bc.env
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]

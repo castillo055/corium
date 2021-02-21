@@ -1,0 +1,56 @@
+#!/bin/sh
+
+alias ls='ls --color=auto'
+#alias ll='ls -lsah --color=auto'
+alias ll='exa -la --git --group --group-directories-first'
+alias l='exa -l --git --group --group-directories-first'
+alias bc='bc -q'
+
+alias config="git --git-dir=$HOME/repos/cdotfiles.git/ --work-tree=$HOME"
+alias config-ls="config ls-tree master -rt | cut -c 54- | sed 's/^\.//;s/[a-zA-Z]*\//| /g'"
+
+alias sc='systemctl'
+alias scu='systemctl --user'
+
+alias bt='bluetoothctl'
+
+# Git
+alias glog='git log --graph'
+
+# CD aliases
+alias cr='cd ~/repos'
+crl() {cd ~/repos/local/$( ls -1 ~/repos/local | fzf )}
+crg() {cd ~/repos/github/$( ls -1 ~/repos/github | fzf )}
+crs() {cd ~/repos/star/$( ls -1 ~/repos/star | fzf )}
+cri() {cd ~/repos/inhouse/$( ls -1 ~/repos/inhouse | fzf )}
+crp() {cd ~/repos/practicas/$( ls -1 ~/repos/practicas | fzf )}
+
+alias cds='cd ~/.sources'
+alias cdb='cd ~/.local/bin'
+alias cdc='cd ~/.config'
+
+alias cdd='cd ~/dox/downloads'
+
+alias cb='cd $OLDPWD'
+
+# Terminal Ease aliases
+#alias v='vim'
+alias v='nvim -i ~/.cache/vim/info'
+alias r='ranger'
+alias z='zathura'
+alias ccat='highlight --out-format=ansi'
+
+#opa() {
+#	TMP=$( du -a ~/dox/aero/ | cut -f2 | grep .pdf | fzf --prompt="OPEN PDF AERO » " ) ;
+#	[[ $? -eq 0 ]] && zathura $TMP & ;
+#}
+
+se() { TMP=$( du -a ~/.local/bin/ | cut -f2 | sort | fzf --prompt="EDIT » " ) ; [[ $? -eq 0 ]] && $EDITOR $TMP ;}
+
+ns() { SCRIPT="$1" ; [[ $SCRIPT == "" ]] || { [[ -f ~/.local/bin/$SCRIPT ]] || { echo "#!/bin/bash" > ~/.local/bin/$SCRIPT && chmod +x ~/.local/bin/$SCRIPT && v ~/.local/bin/$SCRIPT } } ;}
+
+pac() { TMP=$( pacman -Ss | awk 'NR%2{printf "%s¬",$0;next;}1' | sed 's/   //' | column -s'¬' -t -E1 | fzf ) ; [[ $? -eq 0 ]] && TMP=$( echo $TMP | cut -d ' ' -f1 | cut -d '/' -f2 ) && pacman -Si $TMP && sudo pacman -S $TMP ;}
+
+ya() { TMP=$( paru -Sl aur | cut -c 5- | sed 's/ unknown-version//;s/ \[Ins/¬[Ins/' | column -s'¬' -t | fzf ) ; [[ $? -eq 0 ]] && TMP=$( echo $TMP | cut -d ' ' -f1 | cut -d '/' -f2 ) && paru -Si $TMP && read && paru -S $TMP ;}
+
+checkpass() { curl -s https://api.pwnedpasswords.com/range/$( echo -n $1 | sha1sum | tr '[a-z]' '[A-Z]' | cut -c -5 ) | grep $( echo -n $1 | sha1sum | tr '[a-z]' '[A-Z]' | cut -c 6- ) ;}
