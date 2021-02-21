@@ -1,7 +1,35 @@
+- defaults:
+        link:
+                create: true
+                relink: true
+                force: true
+
 - clean: ['~']
 
 - link:
         ~/.config/bc/bc.env: .config/bc/bc.env
+        ~/.config/csmgmt: .config/csmgmt
+        ~/.config/dunst/dunstrc: .config/dunst/dunstrc
+        ~/.config/hm/clean.list: .config/hm/clean.list
+        ~/.config/inhousenet: .config/inhousenet
+        ~/.config/mpd/mpd.conf: .config/mpd/mpd.conf
+        ~/.config/ncmpcpp/config: .config/ncmpcpp/config
+        ~/.config/npm/npmrc: .config/npm/npmrc
+        ~/.config/nvim/coc-settings.json: .config/nvim/coc-settings.json
+        ~/.config/picom/picom.conf: .config/picom/picom.conf
+        ~/.config/ranger/commands.py: .config/ranger/commands.py
+        ~/.config/ranger/commands_full.py: .config/ranger/commands_full.py
+        ~/.config/ranger/rc.conf: .config/ranger/rc.conf
+        ~/.config/ranger/rifle.conf: .config/ranger/rifle.conf
+        ~/.config/screenlayouts: .config/screenlayouts
+        ~/.config/vim/bundle: .config/vim/bundle
+        ~/.config/vim/vimrc: .config/vim/vimrc
+        ~/.config/zathura: .config/zathura
+        ~/.config/zsh: .config/zsh
+        ~/.config/ncpamixer.conf: .config/ncpamixer.conf
+        ~/.config/proxscan.rc: .config/proxscan.rc
+        ~/.config/use_castle_dwm: .config/use_castle_dwm
+        ~/.config/wall.png: .config/wall.png
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
