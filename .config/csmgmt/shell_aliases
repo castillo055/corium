@@ -24,7 +24,7 @@ crg() {cd ~/repos/github/$( ls -1 ~/repos/github | fzf )}
 crs() {cd ~/repos/star/$( ls -1 ~/repos/star | fzf )}
 cri() {cd ~/repos/inhouse/$( ls -1 ~/repos/inhouse | fzf )}
 crt() {cd ~/repos/practicas/$( ls -1 ~/repos/practicas | fzf )}
-crp() {cd ~/repos/public/$( ls -1 ~/repos/practicas | fzf )}
+crp() {cd ~/repos/public/$( ls -1 ~/repos/public | fzf )}
 
 alias cds='cd ~/.sources'
 alias cdb='cd ~/.local/bin'
