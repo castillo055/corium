@@ -3,6 +3,7 @@
 export XDG_CONFIG_HOME="/home/victor/.config"
 
 export PATH=$PATH:/home/victor/.local/bin
+export PATH=$PATH:/home/victor/.local/bin/scripts
 
 export EDITOR=/bin/nvim
 

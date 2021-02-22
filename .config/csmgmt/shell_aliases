@@ -6,7 +6,7 @@ alias ll='exa -la --git --group --group-directories-first'
 alias l='exa -l --git --group --group-directories-first'
 alias bc='bc -q'
 
-alias config="git --git-dir=$HOME/repos/cdotfiles.git/ --work-tree=$HOME"
+alias config="git --git-dir=$HOME/repos/public/corium/.git --work-tree=$HOME/repos/public/corium/"
 alias config-ls="config ls-tree master -rt | cut -c 54- | sed 's/^\.//;s/[a-zA-Z]*\//| /g'"
 
 alias sc='systemctl'
@@ -23,7 +23,8 @@ crl() {cd ~/repos/local/$( ls -1 ~/repos/local | fzf )}
 crg() {cd ~/repos/github/$( ls -1 ~/repos/github | fzf )}
 crs() {cd ~/repos/star/$( ls -1 ~/repos/star | fzf )}
 cri() {cd ~/repos/inhouse/$( ls -1 ~/repos/inhouse | fzf )}
-crp() {cd ~/repos/practicas/$( ls -1 ~/repos/practicas | fzf )}
+crt() {cd ~/repos/practicas/$( ls -1 ~/repos/practicas | fzf )}
+crp() {cd ~/repos/public/$( ls -1 ~/repos/practicas | fzf )}
 
 alias cds='cd ~/.sources'
 alias cdb='cd ~/.local/bin'
