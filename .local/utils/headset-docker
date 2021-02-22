@@ -1,0 +1,18 @@
+#!/bin/bash
+#killall headset-docker
+
+prev=0
+while true; do
+	devinfo="$(bluetoothctl info)"
+	linecount=$(echo "$devinfo" | wc -l)
+#	echo "$prev -> $linecount"
+	if [[ "$linecount" -gt 1 ]] && [[ "$prev" -eq 1 ]]; then
+		 bluetoothctl disconnect > /dev/null
+		 bluetooth_battery 90:7A:58:17:B6:8F.2 > /dev/null
+		 bluetoothctl connect 90:7A:58:17:B6:8F > /dev/null
+		 sleep 10
+	fi
+	prev=$linecount
+	sleep 1
+done
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DATA_DIR="/home/victor/.cache/padd_fetch"
+
+[ -f $DATA_DIR/notifications ] || exit 1
+
+st -c scratch -g 90x53+1+0 -e sh -c "cat $DATA_DIR/notifications | uniq | sed -r 's/^com.|^org.//' | sed 's/null$//' | fzf --layout=reverse --border=rounded --color='border:#fcae1e'"

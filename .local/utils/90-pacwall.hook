@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+Description = Regenerating the wallpaper (pacwall)
+When = PostTransaction
+Exec = /home/victor/.sources/pacwall/pacwall.sh -o /home/victor/.sources/pacwall/pacwall.png -b black -s "#fcae1edd" -r 3 -i -x 20 -z 10

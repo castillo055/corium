@@ -1,0 +1,21 @@
+#!/bin/bash
+
+LOCAL_IP=$( ip a | grep 'inet ' | grep -v '127.0.0.1' | cut -d ' ' -f 6 | cut -d '/' -f 1 )
+TEMPLATE_IP=$( echo $LOCAL_IP | cut -d'.' -f 1-3 )
+
+
+DEV_UP=$(for i in {1..254} ; do
+is_up=$( ping $TEMPLATE_IP.$i -W2 -c1 | grep received | cut -d ' ' -f4 ) \
+	&& [[ $is_up -eq 1 ]] \
+	&& echo "$TEMPLATE_IP.$i" &
+done) # | sed 's/$/)/;s/^/(/')
+wait
+
+echo "$DEV_UP"
+echo -e "\n[PROCESSING ARP RECON]\n"
+
+#echo grep -E "$(echo $DEV_UP | sed 's/ /|/g;s/(/\\(/g;s/)/\\)/g')"
+#ARP=$(arp -a)
+PATTERN="$(echo $DEV_UP | sed 's/ /[[:space:]]dev|/g')"
+ip neigh | grep 'REACHABLE\|STALE' # | grep -E \'"$PATTERN"\' #;s/(/\\(/g;s/)/\\)/g')"
+#echo -e "$ARP" | grep -e "$(echo "$DEV_UP" | sed 's/\n/|/g')"

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+list=$(ls -ls)
+listhidden=$(ls -lsa | egrep " \.[a-zA-Z0-9]+$")
+
+folders=$(echo "$list" | egrep " .+ d")
+files=$(echo "$list" | egrep " .+ -")
+dotdirs=$(echo "$listhidden" | egrep " .+ d")
+dotfiles=$(echo "$listhidden" | egrep " .+ -")

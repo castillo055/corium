@@ -1,0 +1,48 @@
+#!/bin/bash
+export PATH="$PATH:/home/victor/.local/bin"
+
+
+configdir="$HOME/.config/inhousenet"
+devfile="$configdir/devices"
+
+[ -d $configdir ] || mkdir -p $configdir
+[ -f $devfile ] || touch $devfile
+
+function check() { \
+	host=$(echo $1 | cut -d ' ' -f1)
+	hasLOC=$(echo $1 | cut -d ' ' -f2)
+
+	if [[ "$hasLOC" == "LOC" ]]; then
+		ping -c 1 -W 1 $host.loc > /dev/null
+		if [[ "$?" -eq 0 ]]; then
+			echo $host ON
+			cipcomms_do inhouse_net put $host 3
+		else
+			timeout 10 ssh $host sleep 0.1
+			if [[ "$?" -eq 0 ]]; then
+				echo $host ON non-local
+				cipcomms_do inhouse_net put $host 2
+			else
+				echo $host OFF
+				cipcomms_do inhouse_net put $host 0
+			fi
+		fi
+	else
+		timeout 10 ssh $host sleep 0.1
+		if [[ "$?" -eq 0 ]]; then
+			echo $host ON remote
+			cipcomms_do inhouse_net put $host 1
+		else
+			echo $host OFF
+			cipcomms_do inhouse_net put $host 0
+		fi
+	fi
+}
+
+echo [CHECKING]
+
+while read line; do
+	check "$line" &
+done < <(cat $devfile)
+
+wait

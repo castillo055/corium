@@ -1,0 +1,29 @@
+#!/bin/bash
+
+CONFIG_DIR="$HOME/.config/hm"
+
+[ -d $CONFIG_DIR ] || mkdir -p $CONFIG_DIR
+
+function print_usage() {\
+	echo "Usage: hm COMMAND"
+	echo ""
+	echo "Commands:"
+	echo " 	clean 		trash files listed in clean.list file"
+}
+
+case $1 in
+	"clean")
+		CLEAN_LIST="$CONFIG_DIR/clean.list"
+		CLEAN_TRASHCAN="$CONFIG_DIR/clean.trashcan"
+		[ -f $CLEAN_LIST ] || touch $CLEAN_LIST
+		[ -d $CLEAN_TRASHCAN ] || mkdir -p $CLEAN_TRASHCAN
+
+		for file in $(cat $CLEAN_LIST); do
+			mv $HOME/$file $CLEAN_TRASHCAN/$filea 2> /dev/null
+			[ "$?" -eq "0" ] && echo "[clean] Trashing [$file]"
+		done
+		;;
+	*)
+		print_usage
+		;;
+esac

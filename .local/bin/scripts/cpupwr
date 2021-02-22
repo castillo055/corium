@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo -v -n 2> /dev/null
+[ "$?" -eq 1 ] && { echo "[ERROR] ROOT PERMITION REQUIRED" && exit 1; }
+
+case $1 in
+	"pwr") SETTING="powersave" && PWR="power";;
+	"perf") SETTING="performance" && PWR="performance";;
+esac
+
+cd /sys/devices/system/cpu/cpufreq
+
+for file in $(ls); do
+	echo $SETTING > $file/scaling_governor
+	echo $PWR > $file/energy_performance_preference
+done
+

@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+source $HOME/.zshrc
+
+TMP=$( ls -1 ~/dox/aero/ | grep "^[0-9]_" | dmenu -l 20 -i -p "GO TO CLASS FOLDER » " ) ;
+[[ $? -eq 0 ]] && st -c scratch -g130x30-1+30 -e zsh -c "ranger ~/dox/aero/$TMP" &

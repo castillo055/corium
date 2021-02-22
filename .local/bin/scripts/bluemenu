@@ -1,0 +1,33 @@
+#!/bin/bash
+
+while :; do
+	BT_STATUS=$(bluetoothctl show)
+
+	if [[ $(echo "$BT_STATUS" | grep "Powered: yes") != "" ]]; then
+		BT_PWR="on"
+	else
+		BT_PWR="off"
+	fi
+	if [[ $(echo "$BT_STATUS" | grep "Discoverable: yes") != "" ]]; then
+		BT_DISC="on"
+	else
+		BT_DISC="off"
+	fi
+	if [[ $(echo "$BT_STATUS" | grep "Pairable: yes") != "" ]]; then
+		BT_PAIR="on"
+	else
+		BT_PAIR="off"
+	fi
+
+	CHOSEN=$(echo -e "[POWERED]      $BT_PWR\n[DISCOVERABLE] $BT_DISC\n[PAIRABLE]     $BT_PAIR\n\nQUIT" | fzf)
+
+	case $CHOSEN in
+		"[POWERED]      on") bluetoothctl power off > /dev/null;;
+		"[POWERED]      off") bluetoothctl power on > /dev/null;;
+		"[DISCOVERABLE] on") bluetoothctl discoverable off > /dev/null;;
+		"[DISCOVERABLE] off") bluetoothctl discoverable on > /dev/null;;
+		"[PAIRABLE]     on") bluetoothctl pairable off > /dev/null;;
+		"[PAIRABLE]     off") bluetoothctl pairable on > /dev/null;;
+		"QUIT") exit 0;;
+	esac
+done

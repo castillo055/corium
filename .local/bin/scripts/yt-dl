@@ -1,0 +1,27 @@
+#!/bin/bash
+
+URL="$(xclip -o -selection primary)"
+TITLE="$(youtube-dl -e $URL)"
+[[ "$?" -eq 0 ]] || { notify-send -u low -t 500 "NOT A VALID URL" && exit 0; }
+
+FORMAT=$(echo -e "MUSIC\nVIDEO" | dmenu -l 2 -p "$TITLE" )
+
+DEF_DIR="$HOME/music/NEW"
+# DEF_DIR="/tmp/yt-dl-test"
+[ -d $DEF_DIR ] || mkdir -p $DEF_DIR
+
+while read line; do
+	PERCENT=$(echo "$line" | grep "\[download\]" | sed 's/%.*//;s/\..*//;s/\[download\] //' )
+	echo $PERCENT
+	/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc1 $PERCENT &
+done < <(youtube-dl -x --newline --add-metadata -o "$DEF_DIR/%(title)s.%(ext)s" $URL)
+
+MUSIC_DIR="$HOME/music"
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 10 &
+rsync -avz --delete /home/victor/music/ padd:/sdcard/Music
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 55 &
+rsync -avz --delete /home/victor/music/ raspy:/mnt/data/Music
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 100 &
+sleep 0.1
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 0 &
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc1 0 &

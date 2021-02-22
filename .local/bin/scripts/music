@@ -1,0 +1,4 @@
+#!/bin/bash
+#dwmdo setlayout-float && st -e sh -c "dwmdo togglefloating && dwmdo togglelayout && ncmpcpp"
+#st -i -e sh -c "ncmpcpp"
+st -c scratch -g 90x53-0+0 -e sh -c "ncmpcpp"

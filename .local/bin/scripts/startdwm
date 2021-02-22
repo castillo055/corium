@@ -1,0 +1,13 @@
+# Restarts dwm when exited (keeps session opened)
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/victor/repos/inhouse/cipcomms
+
+while true; do
+	if [ "$(cat /home/victor/.config/use_castle_dwm)" == "1" ]; then
+		castle-dwm 2> ~/.cache/castle-dwm.log
+		mv ~/.cache/castle-dwm.log ~/.cache/castle-dwm.log.old
+	else
+		dwm 2> ~/.cache/dwm.log
+		mv ~/.cache/dwm.log ~/.cache/dwm.log.old
+	fi
+done

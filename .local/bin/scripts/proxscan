@@ -1,0 +1,22 @@
+#!/bin/bash
+
+listfile='/home/victor/.config/proxscan.rc'
+[ -f $listfile ] || touch $listfile
+
+SONAR="$(pingsonar)"
+
+for line in $(cat $listfile); do
+	ip=$(echo "$SONAR" | grep $(echo "$line" | cut -d '-' -f 1 ) | cut -d ' ' -f 1 )
+	if [ "$?" -eq 0 ] && [ "$ip" != "" ]; then
+		name=$(echo "$line" | cut -c 19- )
+		grep -q $name /etc/hosts
+		[ "$?" -eq 1 ] && echo -e "$ip\t$name" >> /etc/hosts || sed -i "s/.*$name/$ip\t$name/" /etc/hosts
+		echo -e "$ip\t$name"
+	else
+		name=$(echo "$line" | cut -c 19- )
+		grep -q $name /etc/hosts
+		[ "$?" -eq 0 ] && sed -i "/$name/d" /etc/hosts
+	fi
+		
+done
+#pingsonar | grep -f <(cat $listfile | cut -d ' ' -f1) | cut -d ' ' -f1

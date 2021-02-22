@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#loc='za'
+loc='ma'
+archive=/home/victor/.local/share/weather-archive/radar/$loc
+
+tmpfile=/tmp/weather_radar_$RANDOM.gif
+
+cd $archive
+convert -delay 5 $( ls -1 | sort | tail -n50 ) $tmpfile
+
+mpv --loop $tmpfile
+
+rm $tmpfile

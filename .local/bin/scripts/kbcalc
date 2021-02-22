@@ -1,0 +1,30 @@
+#!/bin/bash
+
+file="/sys/class/leds/input3::numlock/brightness"
+
+export PATH="$PATH:/home/victor/.local/bin"
+export PATH="$PATH:/home/victor/.local/bin/scripts"
+
+prev=$(cat $file)
+while :;do
+	now=$(cat $file)
+
+	if [[ "$now" != "$prev" ]] && [[ "$prev" == "1" ]]; then
+		numlockx on
+
+		echo "[TRIGGERED]"
+		if [[ "$already_on" == "1" ]]; then
+			ppid="$(jobs -p | cut -d ' ' -f 4)"
+			echo "$(ps -ppid $ppid | grep st)"
+			kill "$(ps | grep st | cut -d ' ' -f 2)" 2>1
+			already_on="0"
+		else
+			calc
+			already_on="0" #1" # TODO - ! ! !
+		fi
+	fi
+
+	prev=$now
+
+	sleep 0.2
+done

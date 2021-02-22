@@ -1,0 +1,51 @@
+#!/bin/bash
+
+TIMEZONE="$(timedatectl show | head -n1 | cut -d '=' -f 2)"
+
+PSQL_USER="victor"
+PSQL_DB="cecon"
+
+MAIL_FILE="/home/victor/.thunderbird/kzp3wdt1.default-release/ImapMail/imap.gmail.com/Finances"
+
+ENTRIES_OUT=$(cat "$MAIL_FILE" | grep -aE 'Subject: Alerta de Cargo Superior' -A 15 | grep -oaE "Date.* |importe de .* EUR" | less | paste - - | awk '$3<10{printf $5"-%02d-0"$3"T"$6"Z "$9" "$16"\n", (index("JanFebMarAprMayJunJulAugSepOctNovDec",$4)+2)/3} $3>9{printf $5"-%02d-"$3"T"$6"Z "$9" "$16"\n", (index("JanFebMarAprMayJunJulAugSepOctNovDec",$4)+2)/3}' | sort -n | sed 's/\.//g;s/,/\./g')
+
+while read line; do
+	TIME="${line%% *}"
+	_ammount="${line% *}"
+	AMMOUNT="${_ammount#* }"
+	REMAINING="${line##* }"
+	INS="insert into _out (date, ammount, remaining) values (
+		'$TIME', '$AMMOUNT', '$REMAINING') on conflict (remaining) do nothing;"
+	psql -U $PSQL_USER -d $PSQL_DB -c "$INS"
+done < <(echo "$ENTRIES_OUT")
+
+ENTRIES_IN=$(cat "$MAIL_FILE" | grep -aE 'Subject: Alerta de Abono Superior' -A 15 | grep -oaE "Date.* |importe de .* EUR" | less | paste - - | awk '$3<10{printf $5"-%02d-0"$3"T"$6"Z "$9" "$16"\n", (index("JanFebMarAprMayJunJulAugSepOctNovDec",$4)+2)/3} $3>9{printf $5"-%02d-"$3"T"$6"Z "$9" "$16"\n", (index("JanFebMarAprMayJunJulAugSepOctNovDec",$4)+2)/3}' | sort -n | sed 's/\.//g;s/,/\./g')
+
+while read line; do
+	TIME="${line%% *}"
+	_ammount="${line% *}"
+	AMMOUNT="${_ammount#* }"
+	REMAINING="${line##* }"
+	INS="insert into _in (date, ammount, remaining) values (
+		'$TIME', '$AMMOUNT', '$REMAINING') on conflict (remaining) do nothing;"
+	psql -U $PSQL_USER -d $PSQL_DB -c "$INS"
+done < <(echo "$ENTRIES_IN")
+	
+
+
+PSQL_CREATE_TABLES="CREATE TABLE IF NOT EXISTS _out (
+   id SERIAL PRIMARY KEY,
+   date TIMESTAMPTZ NOT NULL,
+   ammount MONEY NOT NULL,
+   remaining MONEY UNIQUE NOT NULL
+); CREATE TABLE IF NOT EXISTS _in (
+   id SERIAL PRIMARY KEY,
+   date TIMESTAMPTZ NOT NULL,
+   ammount MONEY NOT NULL,
+   remaining MONEY UNIQUE NOT NULL
+);"
+
+psql -U $PSQL_USER -d $PSQL_DB -c "SET timezone = '$TIMEZONE'"
+psql -U $PSQL_USER -d $PSQL_DB -c "SHOW TIMEZONE"
+psql -U $PSQL_USER -d $PSQL_DB -c "$PSQL_CREATE_TABLES"
+psql -U $PSQL_USER -d $PSQL_DB -c '\dt'

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+CACHE_DIR='/home/victor/.cache/padd_fetch'
+[[ -d $CACHE_DIR ]] || mkdir $CACHE_DIR
+
+# DETERMINE IF PADD IS LOCAL OR NOT
+HOST="padd"
+[[ "$(cipcomms_do inhouse_net get padd)" -eq 3 ]] && HOST="padd.loc"
+
+echo 1 > $CACHE_DIR/pinging_status
+# ESTABLISH CONNECTION WITH PADD
+timeout 30 ssh $HOST true
+[[ $? -eq 124 ]] && echo '-1' > $CACHE_DIR/pinging_status && exit 1
+echo 2 > $CACHE_DIR/pinging_status
+
+# FETCH CURRENT BATTERY PERCENTAGE
+BAT=$( timeout 10 ssh $HOST su -c cat /sys/class/power_supply/battery/capacity )
+[[ $? -eq 124 ]] && echo '-2' > $CACHE_DIR/pinging_status && exit 1
+echo 3 > $CACHE_DIR/pinging_status
+
+# FETCH NOTIFICATIONS FEED
+timeout 25 ssh $HOST su -c "dumpsys notification --noredact | grep -E \"NotificationRecord|ticker\" | sed 's/^ *//;s/NotificationRecord.*pkg//' | cut -d '=' -f2 | sed 's/ user$//' | paste - -" > $CACHE_DIR/notifications
+[[ $? -eq 124 ]] && echo '-3' > $CACHE_DIR/pinging_status && exit 1
+
+echo 0 > $CACHE_DIR/pinging_status 
+
+BAT_PERCENT=$( echo $BAT'*0.01' | bc )
+
+echo $BAT_PERCENT > $CACHE_DIR/battery

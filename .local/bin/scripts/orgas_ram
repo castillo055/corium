@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+st -c scratch -g48x25+1+30 -e sh -c "export VIMINIT=':set runtimepath^=/home/victor/.config/vim|:source /home/victor/.config/vim/vimrc' && nvim ~/orgas/ram.org"

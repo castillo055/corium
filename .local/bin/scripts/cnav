@@ -1,0 +1,78 @@
+#!/bin/bash
+
+TIMEZONE="$(timedatectl show | head -n1 | cut -d '=' -f 2)"
+
+PSQL_USER="victor"
+PSQL_DB="cnav"
+
+#JOURNAL="/home/victor/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous/Journal4891945.cache"
+JOURNAL="/home/victor/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous/Journal."
+JOURNAL_DIR="/home/victor/.steam/steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous/"
+
+function get_last_journal(){ \
+	cd "$JOURNAL_DIR"
+	echo $JOURNAL_DIR$(ls -1 | grep 'Journal\.' | sort | tail -n1)
+}
+
+function event_FSDJump(){ \
+	#echo $1 | sed -r 's/.+"StarSystem":"//;s/".+//'
+	#echo $1 | sed -r 's/.+"timestamp":"//;s/".+event.+, "StarSystem":"/ - /;s/".+//'
+	TIME="$(echo $1 | sed -r 's/.+"timestamp":"//;s/".+//;s/T/ /;s/Z//')"
+	NAME="$(echo $1 | sed -r 's/.+"StarSystem":"//;s/".+//')"
+	SPOS="$(echo $1 | sed -r 's/.+"StarPos"://;s/, .+//')"
+
+	VISIT_INS="INSERT INTO star_visits (visited_on, system, discovery_scanner, event_data)
+	 VALUES('$TIME', '$NAME', true, '$1');"
+	SYSTEMS_INS="INSERT INTO star_systems (system, system_pos)
+	 VALUES('$NAME', ARRAY $SPOS);"
+	
+	echo $VISIT_INS
+	psql -U $PSQL_USER -d $PSQL_DB -c "$VISIT_INS"
+	psql -U $PSQL_USER -d $PSQL_DB -c "$SYSTEMS_INS"
+}
+
+function dispatch_event() { \
+	DATA="$1"
+	EVENT="$(echo "$DATA" | sed -r 's/.+"event":"//;s/".+//')"
+
+	#echo $DATA
+	event_$EVENT "$DATA" 2> /dev/null
+}
+
+function utility(){ \
+	line="$(cat '$1' | tail -n 1 )"
+	dispatch_event "$line"
+}
+
+while [ 1 ]; do
+	JOURNAL="$(get_last_journal)"
+	echo $JOURNAL
+	echo "$JOURNAL" | entr -p utility "$JOURNAL"
+done
+exit 0
+
+PSQL_CREATE_TABLES="CREATE TABLE IF NOT EXISTS star_visits (
+   visit_id SERIAL PRIMARY KEY,
+   visited_on TIMESTAMPTZ UNIQUE NOT NULL,
+   system TEXT NOT NULL,
+   discovery_scanner BOOLEAN NOT NULL,
+   event_data TEXT NOT NULL
+); CREATE TABLE IF NOT EXISTS star_systems (
+   system_id SERIAL PRIMARY KEY,
+   system TEXT UNIQUE NOT NULL,
+   system_pos DOUBLE PRECISION [] NOT NULL,
+   stations TEXT [],
+   scans TEXT []
+);"
+
+psql -U $PSQL_USER -d $PSQL_DB -c "SET timezone = '$TIMEZONE'"
+psql -U $PSQL_USER -d $PSQL_DB -c "SHOW TIMEZONE"
+psql -U $PSQL_USER -d $PSQL_DB -c "$PSQL_CREATE_TABLES"
+psql -U $PSQL_USER -d $PSQL_DB -c '\dt'
+
+exit 0
+
+# Don't execute this (It will duplicate the db)
+while read line; do
+	dispatch_event "$line"
+done < <(cat "$JOURNAL"*)

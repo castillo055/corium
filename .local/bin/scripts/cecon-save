@@ -1,0 +1,45 @@
+#!/bin/bash
+
+TIMEZONE="$(timedatectl show | head -n1 | cut -d '=' -f 2)"
+
+PSQL_USER="victor"
+PSQL_DB="cecon"
+
+PSQL_CREATE_TABLES="CREATE TABLE IF NOT EXISTS savings (
+   id SERIAL PRIMARY KEY,
+   date TIMESTAMPTZ NOT NULL,
+   ammount MONEY NOT NULL,
+   remaining MONEY NOT NULL
+);"
+
+psql -q -U $PSQL_USER -d $PSQL_DB -c "SET timezone = '$TIMEZONE'" >/dev/null
+psql -q -U $PSQL_USER -d $PSQL_DB -c "SHOW TIMEZONE" >/dev/null
+psql -q -U $PSQL_USER -d $PSQL_DB -c "$PSQL_CREATE_TABLES" 2>/dev/null
+psql -q -U $PSQL_USER -d $PSQL_DB -c '\dt' >/dev/null
+
+PREV_AMM_QRY="SELECT
+    remaining
+  FROM savings
+  ORDER BY date DESC
+  LIMIT 1"
+PREV_AMM_DATA=$(psql -U $PSQL_USER -q -d $PSQL_DB -c "$PREV_AMM_QRY")
+
+echo "$PREV_AMM_DATA"
+PREV_AMM=$(echo "$PREV_AMM_DATA" | sed -e '1,2d' | tail -n 2 | head -n 1 | cut -d'$' -f 2)
+echo $PREV_AMM
+if [[ "$PREV_AMM" == "(0 rows)" ]]; then
+	PREV_AMM=0
+fi
+
+TIME="$(date)"
+AMMOUNT="$1"
+if [[ "$2" != "" ]]; then
+	TIME="$1"
+	AMMOUNT="$2"
+fi
+echo TIME="$TIME" AMM="$AMMOUNT" PREV="$PREV_AMM"
+REMAINING=$(echo "$AMMOUNT + $PREV_AMM" | bc )
+echo "Current savings: $REMAINING"
+INS="insert into savings (date, ammount, remaining) values (
+'$TIME', '$AMMOUNT', '$REMAINING');"
+psql -U $PSQL_USER -d $PSQL_DB -c "$INS"

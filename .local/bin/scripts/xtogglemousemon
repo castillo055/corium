@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cp ~/pics/cloud_who_cursor.png ~/.config/wall.png
+setbg
+
+eval $(xdotool getmouselocation --shell)
+
+if [[ "$X" -gt 1920 ]]; then
+	xdotool mousemove 960 540
+else
+	xdotool mousemove 2880 540
+fi
+
+sleep 2
+cp ~/pics/thumb-1920-936378.jpg ~/.config/wall.png
+setbg

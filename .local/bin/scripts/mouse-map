@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#===MODIFIERS===[ NORMAL , SHIFT , ALT-GR , SHIFT + ALT-GR ]
+MAPPING='xkb_symbols "venus" {
+    key <AE01> { [ Control_L          , Control_L            ] };
+    key <AE02> { [ Alt_L          , Alt_L            ] };
+    key <AE03> { [ KP_3          , KP_3            ] };
+    key <AE04> { [ KP_4          , KP_4            ] };
+    key <AE05> { [ KP_5          , KP_5            ] };
+    key <AE06> { [ KP_6          , KP_6            ] };
+    key <AE07> { [ KP_7          , KP_7            ] };
+    key <AE08> { [ w          , w            ] };
+    key <AE09> { [ KP_9          , KP_9            ] };
+    key <AE10> { [ a            , a              ] };
+    key <KPAD> { [ s, s  ] };
+    key <KPSU> { [ d        , d          ] };
+};'
+
+venus_keyboard=$(xinput list | sed -n 's/.*USB Gaming Mouse[[:space:]]*id=\([0-9]*\).*keyboard.*/\1/p')
+[ "$venus_keyboard" ] || exit
+
+echo "$MAPPING" > /usr/share/X11/xkb/symbols/venus
+
+mkdir ~/xkb
+
+setxkbmap -device $venus_keyboard -print | sed 's/\(xkb_symbols.*\)"/\1+venus"/' > ~/xkb/keymap
+cat ~/xkb/keymap
+xkbcomp ~/xkb/keymap -i $venus_keyboard -synch $DISPLAY 2>/dev/null
+
+rm ~/xkb/keymap
+rmdir ~/xkb

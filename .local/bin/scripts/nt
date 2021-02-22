@@ -1,0 +1,19 @@
+#!/bin/zsh
+source ~/.zshrc
+
+LTDOXDIR="$HOME/dox/latex-dox"
+
+[ -d "$LTDOXDIR" ] || mkdir -p $LTDOXDIR
+
+list=$(ls -1 $LTDOXDIR)
+NAME=$(echo "$list" | dmenu -l $(echo "$list" | wc -l))
+
+FILEDIR="$LTDOXDIR/$NAME"
+
+mkdir $FILEDIR
+[ -f "$FILEDIR/$NAME.tex" ] || cp $LTDOXDIR/templates/doc.tex $FILEDIR/$NAME.tex
+
+ln -svn $FILEDIR/.texbuild/$NAME.pdf $FILEDIR/$NAME.pdf
+ln -svn $LTDOXDIR/templates $FILEDIR/templates
+
+st -e sh -c "cd $FILEDIR; export VIMINIT=':set runtimepath^=/home/victor/.config/vim|:source /home/victor/.config/vim/vimrc' && nvim $FILEDIR/$NAME.tex"
