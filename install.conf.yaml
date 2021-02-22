@@ -3,6 +3,7 @@
                 create: true
                 relink: true
                 force: true
+                ignore-missing: true
 
 - clean: ['~']
 
@@ -30,6 +31,20 @@
         ~/.config/proxscan.rc: .config/proxscan.rc
         ~/.config/use_castle_dwm: .config/use_castle_dwm
         ~/.config/wall.png: .config/wall.png
+        ~/.local/bin/scripts: .local/bin/scripts
+        ~/.local/utils: .local/utils
+        ~/.gitconfig: home/.gitconfig
+        ~/.xprofile: home/.xprofile
+        ~/.Xresources: home/.Xresources
+        ~/.zshrc: home/.zshrc
+        ~/.local/bin/castle-dwm: window-mgrs/cdwm/castle-dwm/castle-dwm
+        ~/.local/bin/castat: window-mgrs/cdwm/castat/castat
+        ~/repos/public/castle-dwm: window-mgrs/cdwm/castle-dwm
+        ~/repos/public/castat: window-mgrs/cdwm/castat
+        ~/repos/public/castle-st: repos/castle-st
+        ~/.local/bin/st: repos/castle-st/st
+        ~/repos/public/castat-modules: repos/castat-modules
+
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
