@@ -1,0 +1,8 @@
+[user]
+	email = victorcastilloaguero@gmail.com
+	name = Víctor Castillo
+	username = castillo055
+[pull]
+	rebase = false
+[core]
+	autocrlf = input

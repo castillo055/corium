@@ -1,0 +1,8 @@
+PATH=$PATH:/home/victor/.local/bin
+PATH=$PATH:/home/victor/.local/bin/scripts
+
+xrdb /home/victor/.Xresources			# loads xresources
+
+/home/victor/.local/bin/scripts/setbg &			# sets wallpaper (script loc: ~/.local/bin/setbg)
+
+xset r rate 200 30	# set typematic delay and rate (for when ya hold down ye keys)
