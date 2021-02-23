@@ -1,0 +1,45 @@
+#!/bin/bash
+
+source $HOME/.config/public-tokens
+
+function init_remotes() { \
+	curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user/repos -d '{"name":"'"$1"'"}'
+	curl --header "PRIVATE-TOKEN: $GITLAB_TOKEN" -X POST "https://gitlab.com/api/v4/projects?name=$1"
+	sleep 1
+	
+	ssh git@victorcastle.com init_repo "$GITHUB_USER" "$1"
+}
+if [[ ! -d ~/repos/public ]]
+then
+	mkdir -pv ~/repos/public
+fi
+
+if [ "$1" != "" ]
+then
+	CUR_DIR="$(pwd)"
+	DIR=~/repos/public/$1
+	mkdir -v $DIR
+	cd $DIR
+
+	init_remotes "$1"
+
+	if [ "$2" == "--current" ]
+	then
+		cp -r $CUR_DIR/* $DIR/
+		git remote add vcastle git@victorcastle.com:/srv/git/$1.git
+		git pull --allow-unrelated-histories vcastle main
+	else
+		git init
+		git remote add vcastle git@victorcastle.com:/srv/git/$1.git
+	fi
+
+	git branch -m main
+	#git remote add origin git@github.com:$GITHUB_USER/$1.git
+	touch README.md
+	git add .
+	git commit -m "Hello, world!"
+	git push -u vcastle main
+
+else
+	echo -e "USAGE:\v\tmkrepo {Repository Name}"
+fi
