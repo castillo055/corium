@@ -49,3 +49,15 @@
 [submodule "repos/castle-st"]
 	path = repos/castle-st
 	url = git@victorcastle.com:/srv/git/castle-st.git
+[submodule "repos/castat-modules"]
+	path = repos/castat-modules
+	url = git@victorcastle.com:/srv/git/castat-modules.git
+[submodule "repos/castle-dmenu"]
+	path = repos/castle-dmenu
+	url = git@victorcastle.com:/srv/git/castle-dmenu.git
+[submodule "window-mgrs/cdwm/castat"]
+	path = window-mgrs/cdwm/castat
+	url = git@victorcastle.com:/srv/git/castat.git
+[submodule "window-mgrs/cdwm/castle-dwm"]
+	path = window-mgrs/cdwm/castle-dwm
+	url = git@victorcastle.com:/srv/git/castle-dwm.git
