@@ -46,7 +46,7 @@ alias ccat='highlight --out-format=ansi'
 #	[[ $? -eq 0 ]] && zathura $TMP & ;
 #}
 
-se() { TMP=$( du -a ~/.local/bin/ | cut -f2 | sort | fzf --prompt="EDIT » " ) ; [[ $? -eq 0 ]] && $EDITOR $TMP ;}
+se() { TMP=$( du -a ~/.local/bin/scripts/ | cut -f2 | sort | fzf --prompt="EDIT » " ) ; [[ $? -eq 0 ]] && $EDITOR $TMP ;}
 
 ns() { SCRIPT="$1" ; [[ $SCRIPT == "" ]] || { [[ -f ~/.local/bin/$SCRIPT ]] || { echo "#!/bin/bash" > ~/.local/bin/$SCRIPT && chmod +x ~/.local/bin/$SCRIPT && v ~/.local/bin/$SCRIPT } } ;}
 
