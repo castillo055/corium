@@ -27,6 +27,8 @@
         ~/.config/vim/vimrc: .config/vim/vimrc
         ~/.config/zathura: .config/zathura
         ~/.config/zsh: .config/zsh
+        ~/.config/zsh/.oh-my-zsh/plugins/zsh-autosuggestions: .config/zsh-plugins/zsh-autosuggestions
+        ~/.config/zsh/.oh-my-zsh/plugins/zsh-syntax-highlighting: .config/zsh-plugins/zsh-syntax-highlighting
         ~/.config/ncpamixer.conf: .config/ncpamixer.conf
         ~/.config/proxscan.rc: .config/proxscan.rc
         ~/.config/use_castle_dwm: .config/use_castle_dwm
