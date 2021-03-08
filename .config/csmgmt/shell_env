@@ -1,15 +1,15 @@
 #!/bin/sh
 
-export XDG_CONFIG_HOME="/home/victor/.config"
+export XDG_CONFIG_HOME="$HOME/.config"
 
-export PATH=$PATH:/home/victor/.local/bin
-export PATH=$PATH:/home/victor/.local/bin/scripts
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/bin/scripts
 
 export EDITOR=/bin/nvim
 
 export _JAVA_AWT_WM_NONREPARENTING=1 # 'tis for IntelliJ to actually function
 
-export BC_ENV_ARGS=/home/victor/.config/bc/bc.env	# Sets env vars for bc calculator
+export BC_ENV_ARGS=$HOME/.config/bc/bc.env	# Sets env vars for bc calculator
 
 # fzf default settings
 export FZF_DEFAULT_OPTS="--layout=reverse --height 50% --no-bold --color='bg+:#ec9a0a,fg+:#060604,gutter:0,hl+:1,prompt:#fcae1e'"
@@ -18,13 +18,13 @@ export FZF_DEFAULT_OPTS="--layout=reverse --height 50% --no-bold --color='bg+:#e
 export GNUPGHOME="~/.config/gnupg"
 export WWW_HOME="~/.config/w3m"
 export __GL_SHADER_DISK_CACHE_PATH="~/.cache/nv"
-export VIMINIT=":set runtimepath^=/home/victor/.config/vim|:source /home/victor/.config/vim/vimrc"
+export VIMINIT=":set runtimepath^=$HOME/.config/vim|:source $HOME/.config/vim/vimrc"
 
-export HISTFILE="/home/victor/.cache/shell_hist"
+export HISTFILE="$HOME/.cache/shell_hist"
 
-export ZSH_CUSTOM="/home/victor/.config/zsh/.oh-my-zsh"
-export ZSH_COMPDUMP="/home/victor/.cache/zcompdump"
+export ZSH_CUSTOM="$HOME/.config/zsh/.oh-my-zsh"
+export ZSH_COMPDUMP="$HOME/.cache/zcompdump"
 
-export NPM_CONFIG_USERCONFIG="/home/victor/.config/npm/npmrc"
+export NPM_CONFIG_USERCONFIG="$HOME/.config/npm/npmrc"
 
-export PLATFORMIO_CORE_DIR="/home/victor/.local/share/platformio"
+export PLATFORMIO_CORE_DIR="$HOME/.local/share/platformio"
