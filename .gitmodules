@@ -61,3 +61,9 @@
 [submodule "window-mgrs/cdwm/castle-dwm"]
 	path = window-mgrs/cdwm/castle-dwm
 	url = git@victorcastle.com:/srv/git/castle-dwm.git
+[submodule ".config/zsh-plugins/zsh-autosuggestions"]
+	path = .config/zsh-plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule ".config/zsh-plugins/zsh-syntax-highlighting"]
+	path = .config/zsh-plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
