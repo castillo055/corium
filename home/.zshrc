@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/victor/.config/zsh/.oh-my-zsh"
+export ZSH="$HOME/.config/zsh/.oh-my-zsh"
 
 fpath=(~/.local/share/git-completion/zsh $fpath)
 source /usr/share/git-completion/prompt.sh
