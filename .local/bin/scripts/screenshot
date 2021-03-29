@@ -1,0 +1,23 @@
+#!/bin/bash
+
+TEMPLATE_NAME="screenshot_XXX_$(date +%d%m%y_%H%M%S).jpg"
+
+DEFAULT_NAME=$(mktemp -t $TEMPLATE_NAME)
+
+maim -sou -b 1 --color=0.9844,0.6797,0.1172 > $DEFAULT_NAME
+[ "$?" -ne "0" ] && {rm -f $DEFAULT_NAME && exit}
+
+OPT=$(echo -e "CLIPBOARD\nSAVE\nSAVE AS..." | dmenu -l 3 -p $DEFAULT_NAME)
+
+case $OPT in
+	"CLIPBOARD")
+		xclip -selection clipboard -t image/png -i $DEFAULT_NAME ;;
+	"SAVE")
+		mv $DEFAULT_NAME $HOME/pics/scshots/$(basename $DEFAULT_NAME);;
+	"SAVE AS...")
+		st -c scratch -t "Choose directory" -g 110x27 -e sh -c "ranger --show-only-dirs --choosedir=/tmp/screenshot_destination"
+		mv $DEFAULT_NAME $(cat /tmp/screenshot_destination)/$(basename $DEFAULT_NAME)
+		rm -f /tmp/screenshot_destination;;
+esac
+
+rm -f $DEFAULT_NAME
