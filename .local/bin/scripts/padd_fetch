@@ -4,8 +4,8 @@ CACHE_DIR='/home/victor/.cache/padd_fetch'
 [[ -d $CACHE_DIR ]] || mkdir $CACHE_DIR
 
 # DETERMINE IF PADD IS LOCAL OR NOT
-HOST="padd"
-[[ "$(cipcomms_do inhouse_net get padd)" -eq 3 ]] && HOST="padd.loc"
+HOST="cyd.padd"
+#[[ "$(cipcomms_do inhouse_net get padd)" -eq 3 ]] && HOST="padd.loc"
 
 echo 1 > $CACHE_DIR/pinging_status
 # ESTABLISH CONNECTION WITH PADD
