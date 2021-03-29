@@ -48,7 +48,7 @@ alias ccat='highlight --out-format=ansi'
 
 se() { TMP=$( du -a ~/.local/bin/scripts/ | cut -f2 | sort | fzf --prompt="EDIT » " ) ; [[ $? -eq 0 ]] && $EDITOR $TMP ;}
 
-ns() { SCRIPT="$1" ; [[ $SCRIPT == "" ]] || { [[ -f ~/.local/bin/$SCRIPT ]] || { echo "#!/bin/bash" > ~/.local/bin/$SCRIPT && chmod +x ~/.local/bin/$SCRIPT && v ~/.local/bin/$SCRIPT } } ;}
+ns() { SCRIPT="$1" ; [[ $SCRIPT == "" ]] || { [[ -f ~/.local/bin/scripts/$SCRIPT ]] || { echo "#!/bin/bash" > ~/.local/bin/scripts/$SCRIPT && chmod +x ~/.local/bin/scripts/$SCRIPT && v ~/.local/bin/scripts/$SCRIPT } } ;}
 
 pac() { TMP=$( pacman -Ss | awk 'NR%2{printf "%s¬",$0;next;}1' | sed 's/   //' | column -s'¬' -t -E1 | fzf ) ; [[ $? -eq 0 ]] && TMP=$( echo $TMP | cut -d ' ' -f1 | cut -d '/' -f2 ) && pacman -Si $TMP && sudo pacman -S $TMP ;}
 
