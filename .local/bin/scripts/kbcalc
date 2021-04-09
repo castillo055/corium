@@ -2,8 +2,8 @@
 
 file="/sys/class/leds/input3::numlock/brightness"
 
-export PATH="$PATH:/home/victor/.local/bin"
-export PATH="$PATH:/home/victor/.local/bin/scripts"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.local/bin/scripts"
 
 prev=$(cat $file)
 while :;do
