@@ -20,3 +20,5 @@ case $CMD in
                 xrandr --output eDP-1-1 --primary --auto --output HDMI-1-1 --auto --left-of eDP-1-1 ;
 		notify-send "EXTENDED MODE                [ 2 | 1 ]" ;;
 esac
+
+source $HOME/.xprofile

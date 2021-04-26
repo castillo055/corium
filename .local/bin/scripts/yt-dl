@@ -18,9 +18,11 @@ done < <(youtube-dl -x --newline --add-metadata -o "$DEF_DIR/%(title)s.%(ext)s" 
 
 MUSIC_DIR="$HOME/music"
 /home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 10 &
-rsync -avz --delete /home/victor/music/ padd:/sdcard/Music
-/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 55 &
-rsync -avz --delete /home/victor/music/ raspy:/mnt/data/Music
+rsync -avz --delete /home/victor/music/ cyd.data:/mnt/data_drive/archive/music
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 40 &
+rsync -avz --delete /home/victor/music/ cyd.padd:/sdcard/Music
+/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 65 &
+rsync -avz --delete /home/victor/music/ cyd.raspy:/mnt/data/Music
 /home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 100 &
 sleep 0.1
 /home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 0 &

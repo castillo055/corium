@@ -1,0 +1,11 @@
+#!/bin/bash
+
+INSTANCES=$(exa -1F $HOME/.local/share/multimc/instances | egrep -v "^_" | grep "\/" | cut -d '/' -f1)
+COUNT=$(echo "$INSTANCES" | wc -l)
+
+SELECTED=$(echo "$INSTANCES" | dmenu -l $COUNT)
+echo Launching Minecraft instance
+echo VERSION: $SELECTED
+
+multimc -l $SELECTED &
+disown
