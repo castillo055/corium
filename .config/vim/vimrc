@@ -4,6 +4,13 @@ filetype off		" aparently required
 " set viminfo location
 set viminfo+=n~/.config/vim/viminfo
 
+" set leated
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+" wrap lines with indent
+set breakindent
+
 " set the runtime path to include vundle
 set rtp+=~/.config/vim/bundle/Vundle.vim
 call vundle#begin('~/.config/vim/bundle')
