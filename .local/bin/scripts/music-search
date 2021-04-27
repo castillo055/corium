@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SONG=$(mpc listall | sed -r 's;(^[^/]*$);/\1;' | column -t -s '/' -o ' | ' | shuf | dmenu -i -l 20 -nb "#000010" -nf "#aefc1e" | cut -d '|' -f 2 | cut -c 2-)
+if [ "$SONG" == "" ]; then
+	exit 0
+fi
+
+mpc clear
+
+mpc listall | grep "$SONG" | mpc add
+mpc play
+
+mpc listall | shuf | mpc add
+
+sleep 0.1
+mpc volume 100
