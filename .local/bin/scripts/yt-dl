@@ -5,6 +5,9 @@ TITLE="$(youtube-dl -e $URL)"
 [[ "$?" -eq 0 ]] || { notify-send -u low -t 500 "NOT A VALID URL" && exit 0; }
 
 FORMAT=$(echo -e "MUSIC\nVIDEO" | dmenu -l 2 -p "$TITLE" )
+if [ "$FORMAT" == "" ]; then
+	exit 0
+fi
 
 DEF_DIR="$HOME/music/NEW"
 # DEF_DIR="/tmp/yt-dl-test"
@@ -15,6 +18,9 @@ while read line; do
 	echo $PERCENT
 	/home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc1 $PERCENT &
 done < <(youtube-dl -x --newline --add-metadata -o "$DEF_DIR/%(title)s.%(ext)s" $URL)
+
+perl-rename -v 's/̲//g' $DEF_DIR/*
+perl-rename -v 's/̼//g' $DEF_DIR/*
 
 MUSIC_DIR="$HOME/music"
 /home/victor/repos/inhouse/cipcomms/cipcomms_do prgs put prc2 10 &
