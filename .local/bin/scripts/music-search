@@ -5,6 +5,8 @@ if [ "$SONG" == "" ]; then
 	exit 0
 fi
 
+mpc update --wait --path NEW
+
 mpc clear
 
 mpc listall | grep "$SONG" | mpc add
