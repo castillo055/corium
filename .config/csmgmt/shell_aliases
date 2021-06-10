@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 alias ls='ls --color=auto'
 #alias ll='ls -lsah --color=auto'
@@ -18,6 +18,7 @@ alias bt='bluetoothctl'
 alias glog='git log --graph'
 
 # CD aliases
+
 alias cr='cd ~/repos'
 crl() {cd ~/repos/local/$( ls -1 ~/repos/local | fzf )}
 crg() {cd ~/repos/github/$( ls -1 ~/repos/github | fzf )}
@@ -34,17 +35,23 @@ alias cdd='cd ~/dox/downloads'
 
 alias cb='cd $OLDPWD'
 
-# Terminal Ease aliases
-#alias v='vim'
-alias v='nvim -i ~/.cache/vim/info'
-alias r='ranger'
-alias z='zathura'
-alias ccat='highlight --out-format=ansi'
+#==============================================================================
+#==========                   Conditional aliases                    ==========
+alias_if_installed() { which $1 > /dev/null && alias $2 || { [ "$3" != "" ] && alias $3 || alias $(echo $2 | cut -d'=' -f 1)="echo '[alias_if_installed] ERROR: [$1] is not installed.'" };}
+#======================================----------------------------------------
 
-#opa() {
-#	TMP=$( du -a ~/dox/aero/ | cut -f2 | grep .pdf | fzf --prompt="OPEN PDF AERO » " ) ;
-#	[[ $? -eq 0 ]] && zathura $TMP & ;
-#}
+# Terminal Ease aliases
+alias_if_installed nvim v='nvim -i ~/.cache/vim/info' v='vim'
+alias_if_installed ranger r='ranger'
+alias_if_installed zathura z='zathura'
+alias_if_installed highlight ccat='highlight --out-format=ansi'
+alias_if_installed matlab matlab='matlab & disown; sleep 10 && exit'
+
+alias_if_installed i3lock i3lock='i3lock -c 06060a'
+alias_if_installed i3lock-fancy i3lock='i3lock-fancy -p'
+
+#==============================================================================
+#==========                   Function Aliases                       ==========
 
 se() { TMP=$( du -a ~/.local/bin/scripts/ | cut -f2 | sort | fzf --prompt="EDIT » " ) ; [[ $? -eq 0 ]] && $EDITOR $TMP ;}
 
@@ -55,3 +62,4 @@ pac() { TMP=$( pacman -Ss | awk 'NR%2{printf "%s¬",$0;next;}1' | sed 's/   //' 
 ya() { TMP=$( paru -Sl aur | cut -c 5- | sed 's/ unknown-version//;s/ \[Ins/¬[Ins/' | column -s'¬' -t | fzf ) ; [[ $? -eq 0 ]] && TMP=$( echo $TMP | cut -d ' ' -f1 | cut -d '/' -f2 ) && paru -Si $TMP && read && paru -S $TMP ;}
 
 checkpass() { curl -s https://api.pwnedpasswords.com/range/$( echo -n $1 | sha1sum | tr '[a-z]' '[A-Z]' | cut -c -5 ) | grep $( echo -n $1 | sha1sum | tr '[a-z]' '[A-Z]' | cut -c 6- ) ;}
+
