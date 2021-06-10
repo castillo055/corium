@@ -1,0 +1,12 @@
+#!/bin/bash
+
+sudo -v
+
+echo "[swap-cycle::FREE] SWAP in use: $(free -h | tail -n 1 | awk '{ print $3 ;}')"
+
+echo "[swap-cycle::OFF] Unmounting SWAP partition..."
+time ( sudo swapoff -a )
+
+echo -e "\n[swap-cycle::ON] Mounting SWAP partition..."
+time ( sudo swapon -a )
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+pass=$(st -c 'scratch' -g 48x10+0+0 -e sh -c '
+tput csr 0 9 && echo -en \
+"╔═══════════════════════════════════════════╗
+║                                           ║
+║      [ I N S E R T  P A S S W O R D ]     ║
+║                                           ║
+║                                           ║
+║    Password: _______________________      ║
+║                                           ║
+║                                           ║
+╚═══════════════════════════════════════════╝" && tput cup 5 15 && stty -echo && read password && echo $password > /proc/$PPID/fd/1')
+
+#echo $pass | sudo -S -v -p ''
