@@ -1,0 +1,3 @@
+#!/bin/bash
+
+fgfs --launcher --enable-save-on-exit --browser-app=firefox
