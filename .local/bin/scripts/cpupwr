@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo -v -n 2> /dev/null
+sudo -v 2> /dev/null
 [ "$?" -eq 1 ] && { echo "[ERROR] ROOT PERMITION REQUIRED" && exit 1; }
 
 case $1 in
