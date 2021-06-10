@@ -53,7 +53,7 @@ set xtics 2*86400;
 set ytics 40;
 set yrange [ 0 : ];
 set y2tics 40;
-set y2range [ 600 : 1200];
+set y2range [ 790 : ];
 set ytics nomirror;
 set grid;
 set datafile separator \" \";
