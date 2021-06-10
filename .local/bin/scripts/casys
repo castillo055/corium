@@ -26,7 +26,9 @@
 comm=$1
 
 NUM=${2:-5}
-VOL=$( pactl list sinks | grep '^[[:space:]]Volume:' | head -n 1 | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
+VOL=$( pactl list sinks | grep '^[[:space:]]Volume:\|Name' | grep "output" -A1 | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,' )
+
+SINK=$(pactl list sinks | grep "Name.*output" | tail -n1 | cut -c 8- )
 
 toggle() { pulsemixer --toggle-mute ;}
 #up() { pulsemixer --change-volume +"$NUM" ;}
@@ -35,9 +37,9 @@ toggle() { pulsemixer --toggle-mute ;}
 
 case "$comm" in
 	toggle) toggle;;
-	up) pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo $(( $(( $VOL +  $NUM )) * 655 )) ;;
-	down) pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo $(( $(( $VOL -  $NUM )) * 655 )) ;;
-	set) pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo $(( $NUM * 655 )) ;;
+	up) pactl set-sink-volume $SINK $(( $(( $VOL +  $NUM )) * 655 )) ;;
+	down) pactl set-sink-volume $SINK $(( $(( $VOL -  $NUM )) * 655 )) ;;
+	set) pactl set-sink-volume $SINK $(( $NUM * 655 )) ;;
 esac >/dev/null
 
 #refbar
