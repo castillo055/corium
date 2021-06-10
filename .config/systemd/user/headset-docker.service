@@ -1,0 +1,10 @@
+[Unit]
+Description=Bluetooth Headset Docker
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+ExecStart=/home/victor/.local/utils/headset-docker
+[Install]
+WantedBy=default.target

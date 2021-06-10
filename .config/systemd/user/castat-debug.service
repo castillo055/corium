@@ -1,0 +1,11 @@
+[Unit]
+Description=Castle's Status Bar for CDWM
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+Environment="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/victor/repos/inhouse/cipcomms"
+ExecStart=/home/victor/.local/bin/castat --debug
+[Install]
+WantedBy=basic.target

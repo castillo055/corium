@@ -1,0 +1,5 @@
+[Unit]
+Description=Inhouse Network Monitor
+[Service]
+Type=oneshot
+ExecStart=/home/victor/.local/bin/scripts/inhousenet

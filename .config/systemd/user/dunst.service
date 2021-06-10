@@ -1,0 +1,10 @@
+[Unit]
+Description=Dunst
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+ExecStart=dunst
+[Install]
+WantedBy=basic.target

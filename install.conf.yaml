@@ -33,6 +33,7 @@
         ~/.config/proxscan.rc: .config/proxscan.rc
         ~/.config/use_castle_dwm: .config/use_castle_dwm
         ~/.config/wall.png: .config/wall.png
+        ~/.config/systemd: .config/systemd
         ~/.local/bin/scripts: .local/bin/scripts
         ~/.local/utils: .local/utils
         ~/.gitconfig: home/.gitconfig
@@ -50,3 +51,4 @@
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
+  - [systemctl --user daemon-reload]

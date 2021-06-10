@@ -1,0 +1,10 @@
+[Unit]
+Description=MPD
+[Service]
+Type=notify
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+ExecStart=mpd --no-daemon
+[Install]
+WantedBy=default.target
