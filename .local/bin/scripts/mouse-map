@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo -v -n 2> /dev/null
 
 #===MODIFIERS===[ NORMAL , SHIFT , ALT-GR , SHIFT + ALT-GR ]
 MAPPING='xkb_symbols "venus" {
@@ -25,7 +26,7 @@ mkdir ~/xkb
 
 setxkbmap -device $venus_keyboard -print | sed 's/\(xkb_symbols.*\)"/\1+venus"/' > ~/xkb/keymap
 cat ~/xkb/keymap
-xkbcomp ~/xkb/keymap -i $venus_keyboard -synch $DISPLAY 2>/dev/null
+sudo xkbcomp ~/xkb/keymap -i $venus_keyboard -synch $DISPLAY 2>/dev/null
 
 rm ~/xkb/keymap
 rmdir ~/xkb
