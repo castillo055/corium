@@ -1,0 +1,87 @@
+#!/bin/bash
+
+. ./cobjects
+
+#========== DIALOG CLASS DECL
+cobj_type dialog vtitle vtext vgeometry vpid fshow fclose
+cobj_type_fun dialog show '{\
+	title=$(cobj_get $this title)
+	text=$(cobj_get $this text)
+
+	title_len=${#title}
+	text_len=${#text}
+
+	if [[ "$title_len" > "$text_len" ]]
+	then
+		echo aye
+		dialog_width=$(( $title_len + 8 ))
+	else
+		dialog_width=$(( $text_len + 8 ))
+	fi
+
+	dialog_height=6
+
+	dialog_geometry=$(( $dialog_width + 4 ))"x"$(( $dialog_height + 2 ))"+0+0"
+	cobj_set $diag_id geometry $dialog_geometry
+
+	dialog_box="$(cdialog_draw_box $dialog_width $dialog_height)"
+
+st -c  "scratch" -g $dialog_geometry -e sh -c "echo -en \"$dialog_box\" && tput civis && tput cup 2 5 && bold=$(tput bold) && echo \"${bold}$title\" && tput cup 4 5 && echo \"$text\" && sleep 1000d" &
+	cobj_set $diag_id pid $!
+}'
+cobj_type_fun dialog close '{\
+	kill -9 $(cobj_get $this pid) 2>&1 > /dev/null
+}'
+
+#========== DIALOG LIST
+declare -A CDIALOG_LIST
+
+cdialog_draw_box() {\
+	local w=$1
+	local h=$2
+	local in_w=$(( $w - 2 ))
+	local in_h=$(( $h - 2 ))
+
+	local top_line="╔"
+	for i in $(seq 0 $in_w); do top_line=$top_line"═"; done
+	top_line=$top_line"╗"
+
+	local mid_line="║"
+	for i in $(seq 0 $in_w); do mid_line=$mid_line" "; done
+	mid_line=$mid_line"║"
+
+	local bottom_line="╚"
+	for i in $(seq 0 $in_w); do bottom_line=$bottom_line"═"; done
+	bottom_line=$bottom_line"╝"
+
+	box="$top_line\n"
+	for i in $(seq 0 $in_h); do box=$box"$mid_line\n"; done
+	box=$box$bottom_line
+
+	echo -e "$box"
+}
+
+cdialog_create() {\
+	cobj_new dialog diag_id
+	CDIALOG_LIST[${#CDIALOG_LIST}]=$diag_id
+	
+	cobj_set "$diag_id" title "$2"
+	cobj_set "$diag_id" text "$3"
+
+#	width=$(echo $geometry | cut -d 'x' -f 1 )
+#	height=$(echo $geometry | cut -d 'x' -f 2 | egrep -o "^[0-9]+" )
+#
+#	title_lines=$(echo "$title_len / ($width * 0.75)" | bc)
+#	[ "$(echo $title_len' % ('$width' * 0.75) > 0' | bc)"] && title_lines=$(( $title_lines + 1 ))
+#
+#	text_lines=$(echo "$text_len / ($width * 0.75)" | bc)
+#	[ "$(echo $text_len' % ('$width' * 0.75) > 0' | bc)"] && text_lines=$(( $text_lines + 1 ))
+
+	cobj_call "$diag_id" show
+	export "$1"="$diag_id"
+}
+
+cdialog_destroy() {\
+	cobj_call "$1" close
+}
+

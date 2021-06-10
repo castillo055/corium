@@ -1,0 +1,29 @@
+#!/bin/sh
+
+ctype_arr() {\
+	local var_type="undefined"
+	local data="[ "
+	local empty='true'
+	for var in "${@}"
+	do
+		if [[ "$var_type" == "undefined" ]]
+		then
+			var_type="$var"
+			data="$var_type[ "
+		else
+			empty='false'
+			data="$data\"$var\" , "
+		fi
+	done
+
+	if [ "$empty" == 'false' ]
+	then
+		echo $data | sed 's/,$/\]/'
+	else
+		echo $data | sed 's/ $/ \]/'
+	fi
+}
+
+ctype_arr_get() {\
+	echo $1 | sed 's/" , "/\n/g' | head -n $2 | tail -n 1
+}

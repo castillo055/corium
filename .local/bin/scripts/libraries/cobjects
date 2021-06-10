@@ -1,0 +1,90 @@
+#!/bin/sh
+
+source ./ctypes
+
+declare -A COBJECT_TYPES_DATA
+declare -A COBJECT_DATA
+
+cobj_type() {\
+	local typename=$1
+	local vars=()
+	local funs=()
+
+	local params=($@)
+
+	for var in "${params[@]:1:${#params}}"
+	do
+		case "${var:0:1}" in
+			'v') vars+=( "${var:1:${#var}}" );;
+			'f') funs+=( "${var:1:${#var}}" );;
+		esac
+	done
+
+	COBJECT_TYPES_DATA[$typename'_vars']=$(ctype_arr string ${vars[@]})
+	COBJECT_TYPES_DATA[$typename'_funs']=$(ctype_arr string ${funs[@]})
+}
+
+cobj_type_fun() {\
+	if [[ "${COBJECT_TYPES_DATA[$1\_funs]}" == *"$2"* ]]
+	then
+		COBJECT_TYPES_DATA[$1'_funs_'$2]="$3"
+	fi
+}
+
+
+a=0
+cobj_new() {\
+	local ID=${#COBJECT_DATA}
+	COBJECT_DATA[$ID]=$1
+	export $2=$ID
+}
+
+cobj_set() {\
+	local ID=$1
+	local var=$2
+	local value=$3
+
+	local class=${COBJECT_DATA[$ID]}
+
+	if [[ "${COBJECT_TYPES_DATA[$class\_vars]}" == *"$var"* ]]
+	then
+		COBJECT_DATA[$ID'_'$var]="$value"
+	else
+		>&2 echo "[ERROR] Class '$class' does not contain variable '$var'."
+		exit 1
+	fi
+}
+
+cobj_get() {\
+	local ID=$1
+	local var=$2
+
+	local class=${COBJECT_DATA[$ID]}
+
+	if [[ "${COBJECT_TYPES_DATA[$class\_vars]}" == *"$var"* ]]
+	then
+		echo ${COBJECT_DATA[$ID'_'$var]}
+	else
+		>&2 echo "[ERROR] Class '$class' does not contain variable '$var'."
+		exit 1
+	fi
+}
+
+cobj_call() {\
+	local ID=$1
+	local fun=$2
+	local params=(${@})
+	local fun_params=(${params:3:${#params}})
+
+	local class=${COBJECT_DATA[$ID]}
+
+	if [[ "${COBJECT_TYPES_DATA[$class\_funs]}" == *"$fun"* ]]
+	then
+		shift 2
+		this=$ID
+		eval "${COBJECT_TYPES_DATA[$class'_funs_'$fun]}"
+	else
+		>&2 echo "[ERROR] Class '$class' does not contain function '$fun'."
+		exit 1
+	fi
+}
