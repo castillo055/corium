@@ -5,6 +5,6 @@ Type=simple
 Restart=always
 RestartSec=30
 TimeoutStartSec=0
-ExecStart=/home/victor/.local/utils/usb-notify
+ExecStart=%h/.local/utils/usb-notify
 [Install]
 WantedBy=graphical.target

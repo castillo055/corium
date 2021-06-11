@@ -5,6 +5,6 @@ Type=simple
 Restart=always
 RestartSec=30
 TimeoutStartSec=0
-ExecStart=/home/victor/.local/bin/scripts/kbcalc
+ExecStart=%h/.local/bin/scripts/kbcalc
 [Install]
 WantedBy=graphical.target
