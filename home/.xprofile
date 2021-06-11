@@ -6,3 +6,4 @@ xrdb $HOME/.Xresources			# loads xresources
 $HOME/.local/bin/scripts/setbg &			# sets wallpaper (script loc: ~/.local/bin/setbg)
 
 xset r rate 200 30	# set typematic delay and rate (for when ya hold down ye keys)
+setxkbmap es
