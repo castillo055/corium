@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="/sys/class/leds/input3::numlock/brightness"
+file="/sys/class/leds/input*::numlock/brightness"
 
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/bin/scripts"
