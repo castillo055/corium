@@ -10,6 +10,7 @@
 - link:
         ~/.config/bc/bc.env: .config/bc/bc.env
         ~/.config/csmgmt: .config/csmgmt
+        ~/.config/cydfs: .config/cydfs
         ~/.config/dunst/dunstrc: .config/dunst/dunstrc
         ~/.config/hm/clean.list: .config/hm/clean.list
         ~/.config/inhousenet: .config/inhousenet

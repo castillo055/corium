@@ -1,0 +1,28 @@
+
+mount_opts:
+        - debug
+        - sshfs_debug
+        - loglevel=debug
+        - reconnect
+        - ServerAliveInterval=15
+        - ServerAliveCountMax=3
+
+servers:
+        cydonia:
+                host: 'cydonia'
+        cyd_data:
+                host: '134.122.70.34'
+                user: 'castle'
+                port: 22
+
+mounts:
+        music:
+                server: 'cyd_data'
+                r_path: 'data_archive/music'
+                l_path: 'music'
+
+        mail:
+                server: 'cyd_data'
+                r_path: 'data_archive/thunderbird'
+                l_path: '.thunderbird'
+
