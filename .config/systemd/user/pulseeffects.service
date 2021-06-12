@@ -1,0 +1,10 @@
+[Unit]
+Description=Pulseeffects APP service
+[Service]
+Type=simple
+Restart=always
+RestartSec=30
+TimeoutStartSec=0
+ExecStart=pulseeffects --gapplication-service
+[Install]
+WantedBy=basic.target
