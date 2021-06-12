@@ -1,6 +1,6 @@
 # Restarts dwm when exited (keeps session opened)
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/victor/repos/inhouse/cipcomms
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/victor/repos/inhouse/cipcomms
 
 while true; do
 	if [ "$(cat ~/.config/use_castle_dwm)" == "1" ]; then
