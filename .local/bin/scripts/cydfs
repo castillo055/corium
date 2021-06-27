@@ -40,5 +40,6 @@ SSHFS_CMD=(sshfs $USER$HOST:$R_PATH $L_PATH -f -d $PORT $SSHFS_OPTS)
 echo "[cydfs::sshfs] INFO: Starting connection."
 echo "[cydfs::sshfs] INFO:     ${SSHFS_CMD[@]}"
 umount $HOME/$L_PATH
-"${SSHFS_CMD[@]}" 2>&1
+"${SSHFS_CMD[@]}" 2>&1 ; umount $HOME/$L_PATH
+
 
