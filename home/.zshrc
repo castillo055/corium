@@ -131,3 +131,6 @@ fi
 if [ "$NO_ZSH_GREETING" != "true" ]; then
 	pfetch
 fi
+
+source <(kubectl completion zsh)
+
