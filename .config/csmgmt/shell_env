@@ -31,3 +31,7 @@ export PLATFORMIO_CORE_DIR="$HOME/.local/share/platformio"
 
 export TOGGL_CONFIG="$HOME/.config/togglrc"
 export TOGGL_API_TOKEN="943619b5b5ff9c9ddd4a6a934705b903"
+
+export KUBECONFIG="$HOME/.config/kube/config"
+export AWS_CONFIG_FILE="$HOME/.config/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="$HOME/.config/aws/credentials"
