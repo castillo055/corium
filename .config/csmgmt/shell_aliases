@@ -50,6 +50,8 @@ alias_if_installed matlab matlab='matlab & disown; sleep 10 && exit'
 alias_if_installed i3lock i3lock='i3lock -c 06060a'
 alias_if_installed i3lock-fancy i3lock='i3lock-fancy -p'
 
+alias_if_installed axel wget='axel -a -n 16'
+
 #==============================================================================
 #==========                   Function Aliases                       ==========
 
