@@ -41,6 +41,7 @@
         ~/.xprofile: home/.xprofile
         ~/.Xresources: home/.Xresources
         ~/.zshrc: home/.zshrc
+        ~/.local/share/fa4_iconlist: .local/share/fa4_iconlist
         ~/.local/bin/castle-dwm: window-mgrs/cdwm/castle-dwm/castle-dwm
         ~/.local/bin/castat: window-mgrs/cdwm/castat/castat
         ~/repos/public/castle-dwm: window-mgrs/cdwm/castle-dwm

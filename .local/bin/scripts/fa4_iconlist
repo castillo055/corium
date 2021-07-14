@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ICON_LIST=$HOME/.local/share/fa4_iconlist/fontawesome4_list
+[ -f $ICON_LIST ] || {echo "[ERROR] Could not find icon list: (No such file $ICON_LIST)" | exit 1 }
+
+CHOSEN=$(cat $ICON_LIST | dmenu -l 30 -p "FA4")
+echo $CHOSEN | cut -d ' ' -f 1 | xclip -i -rmlastnl
