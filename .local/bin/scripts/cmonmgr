@@ -1,24 +1,28 @@
 #!/bin/sh
 
-CMD=$( echo -e "> SINGLE\n> CLONED\n> EXTENDED RIGHT\n> EXTENDED LEFT" | dmenu -i -p "DISPLAY MGR" -nf "#3333cc" -sb "#3333cc" -fn "Iosevka:style=Bold" )
+DISPLAY_NAMES=($(xrandr -q | grep " connected" | cut -d ' ' -f 1))
+DISPLAY_COUNT="${#DISPLAY_NAMES[@]}"
+if [ "$DISPLAY_COUNT" == "2" ]
+then
+	CMD=$( echo -e "> SINGLE\n> CLONED\n> EXTENDED RIGHT\n> EXTENDED LEFT" | dmenu -i -p "DISPLAY MGR" -nf "#3333cc" -sb "#3333cc" -fn "Iosevka:style=Bold" )
 
-case $CMD in
-        "> SINGLE" )
-                xrandr --output eDP-1 --primary --auto --output HDMI-1 --off ;
-                xrandr --output eDP-1-1 --primary --auto --output HDMI-1-1 --off ;
-		notify-send "SINGLE MODE                    [ 1 ]" ;;
-        "> CLONED" )
-                xrandr --output eDP-1 --primary --auto --output HDMI-1 --auto --pos 0x0 ;
-                xrandr --output eDP-1-1 --primary --auto --output HDMI-1-1 --auto --pos 0x0 ;
-		notify-send "CLONED MODE                   [[ 1 ]]" ;;
-        "> EXTENDED RIGHT" )
-                xrandr --output eDP-1 --primary --auto --output HDMI-1 --auto --right-of eDP-1 ;
-                xrandr --output eDP-1-1 --primary --auto --output HDMI-1-1 --auto --right-of eDP-1-1 ;
-		notify-send "EXTENDED MODE                [ 1 | 2 ]" ;;
-        "> EXTENDED LEFT" )
-                xrandr --output eDP-1 --primary --auto --output HDMI-1 --auto --left-of eDP-1 ;
-                xrandr --output eDP-1-1 --primary --auto --output HDMI-1-1 --auto --left-of eDP-1-1 ;
-		notify-send "EXTENDED MODE                [ 2 | 1 ]" ;;
-esac
+	DISP1=${DISPLAY_NAMES[0]}
+	DISP2=${DISPLAY_NAMES[1]}
+
+	case $CMD in
+		"> SINGLE" )
+			xrandr --output $DISP1 --primary --auto --output $DISP2 --off ;
+			notify-send "SINGLE MODE                    [ 1 ]" ;;
+		"> CLONED" )
+			xrandr --output $DISP1 --primary --auto --output $DISP2 --auto --pos 0x0 ;
+			notify-send "CLONED MODE                   [[ 1 ]]" ;;
+		"> EXTENDED RIGHT" )
+			xrandr --output $DISP1 --primary --auto --output $DISP2 --auto --right-of $DISP1 ;
+			notify-send "EXTENDED MODE                [ 1 | 2 ]" ;;
+		"> EXTENDED LEFT" )
+			xrandr --output $DISP1 --primary --auto --output $DISP2 --auto --left-of $DISP1 ;
+			notify-send "EXTENDED MODE                [ 2 | 1 ]" ;;
+	esac
+fi
 
 source $HOME/.xprofile
