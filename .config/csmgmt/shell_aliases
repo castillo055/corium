@@ -52,6 +52,8 @@ alias_if_installed i3lock-fancy i3lock='i3lock-fancy -p'
 
 alias_if_installed axel wget='axel -a -n 16'
 
+alias_if_installed _z c='_z 2>&1'
+
 #==============================================================================
 #==========                   Function Aliases                       ==========
 
